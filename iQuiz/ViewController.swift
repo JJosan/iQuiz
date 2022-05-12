@@ -150,6 +150,22 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
                 )
             ]
         ))
+        
+        data.append(Subject(
+            "Mathematics",
+            "Did you pass the third grade?",
+            [
+                Question(
+                    "What is 2+2?",
+                    "1",
+                    [
+                        "4",
+                        "22",
+                        "An irrational number",
+                        "Nobody knows"
+                    ]
+                )
+            ]
+        ))
     }
-    
 }
