@@ -89,9 +89,8 @@ class QuestionViewController: UIViewController, UITableViewDataSource, UITableVi
         performSegue(withIdentifier: "toAnswer", sender: self)
     }
     
-    // broken atm, will change to a segue later
     @objc func handleDismiss(_ sender: UIButton) {
-        self.dismiss(animated: true)
+        self.view.window?.rootViewController?.dismiss(animated: true, completion: nil)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

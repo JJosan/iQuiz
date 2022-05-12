@@ -56,10 +56,9 @@ class FinishedViewController: UIViewController {
     @objc func handleSegue(_ sender: UIButton) {
         alert("Upload Score", "not implemented yet")
     }
-    
-    // broken atm, will change to a segue later
+
     @objc func handleDismiss(_ sender: UIButton) {
-        self.dismiss(animated: true)
+        self.view.window?.rootViewController?.dismiss(animated: true, completion: nil)
     }
 
     func alert(_ title : String, _ message : String) {

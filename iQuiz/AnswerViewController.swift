@@ -108,9 +108,8 @@ class AnswerViewController: UIViewController {
         }
     }
     
-    // broken atm, will change to a segue later
     @objc func handleDismiss(_ sender: UIButton) {
-        self.dismiss(animated: true)
+        self.view.window?.rootViewController?.dismiss(animated: true, completion: nil)
     }
     
 }
