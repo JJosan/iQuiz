@@ -139,19 +139,19 @@
                     </view>
                     <connections>
                         <segue destination="fN2-N0-tEw" kind="presentation" identifier="backToQuestion" modalPresentationStyle="fullScreen" id="HWb-fL-WnL"/>
-                        <segue destination="7Q8-1v-xAQ" kind="presentation" identifier="toFinished" id="K99-Wc-10b"/>
+                        <segue destination="7Q8-1v-xAQ" kind="presentation" identifier="toFinished" modalPresentationStyle="fullScreen" id="K99-Wc-10b"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uk7-s3-VyA" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1651" y="88"/>
         </scene>
-        <!--View Controller-->
+        <!--Finished View Controller-->
         <scene sceneID="mU4-cg-ZmQ">
             <objects>
-                <viewController id="7Q8-1v-xAQ" sceneMemberID="viewController">
+                <viewController id="7Q8-1v-xAQ" customClass="FinishedViewController" customModule="iQuiz" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="anj-sN-HsD">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <viewLayoutGuide key="safeArea" id="E7m-Nl-rip"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -163,6 +163,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
+        <segue reference="kGp-Fr-bxH"/>
         <segue reference="HWb-fL-WnL"/>
     </inferredMetricsTieBreakers>
     <resources>

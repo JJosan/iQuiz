@@ -17,6 +17,7 @@ class QuestionViewController: UIViewController, UITableViewDataSource, UITableVi
     let label_subject = UILabel()
     let label_question = UILabel()
     let btn_submit = UIButton()
+    let btn_back = UIButton()
     var subject : Subject! = nil
     
     override func viewDidLoad() {
@@ -27,9 +28,17 @@ class QuestionViewController: UIViewController, UITableViewDataSource, UITableVi
         btn_submit.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -50).isActive = true
         btn_submit.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -30).isActive = true
         btn_submit.backgroundColor = UIColor.lightGray
-        btn_submit.setTitle("Submit", for: .normal)
+        btn_submit.setTitle("submit", for: .normal)
         btn_submit.isEnabled = false
         btn_submit.addTarget(self, action: #selector(handleSegue(_:)), for: .touchUpInside)
+        
+        self.view.addSubview(btn_back)
+        btn_back.translatesAutoresizingMaskIntoConstraints = false
+        btn_back.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 50).isActive = true
+        btn_back.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -30).isActive = true
+        btn_back.backgroundColor = UIColor.systemBlue
+        btn_back.setTitle("back", for: .normal)
+        btn_back.addTarget(self, action: #selector(handleDismiss(_:)), for: .touchUpInside)
         
         self.view.addSubview(label_subject)
         label_subject.translatesAutoresizingMaskIntoConstraints = false
@@ -76,6 +85,11 @@ class QuestionViewController: UIViewController, UITableViewDataSource, UITableVi
     
     @objc func handleSegue(_ sender: UIButton) {
         performSegue(withIdentifier: "toAnswer", sender: self)
+    }
+    
+    // broken atm, will change to a segue later
+    @objc func handleDismiss(_ sender: UIButton) {
+        self.dismiss(animated: true)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

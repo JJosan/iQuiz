@@ -17,6 +17,7 @@ class AnswerViewController: UIViewController {
     let label_correctAnswer = UILabel()
     let label_feedback = UILabel()
     let btn_submit = UIButton()
+    let btn_back = UIButton()
     var subject : Subject! = nil
     
     override func viewDidLoad() {
@@ -29,6 +30,14 @@ class AnswerViewController: UIViewController {
         btn_submit.backgroundColor = UIColor.systemBlue
         btn_submit.setTitle("next", for: .normal)
         btn_submit.addTarget(self, action: #selector(handleSegue(_:)), for: .touchUpInside)
+        
+        self.view.addSubview(btn_back)
+        btn_back.translatesAutoresizingMaskIntoConstraints = false
+        btn_back.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 50).isActive = true
+        btn_back.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -30).isActive = true
+        btn_back.backgroundColor = UIColor.systemBlue
+        btn_back.setTitle("back", for: .normal)
+        btn_back.addTarget(self, action: #selector(handleDismiss(_:)), for: .touchUpInside)
         
         self.view.addSubview(label_subject)
         label_subject.translatesAutoresizingMaskIntoConstraints = false
@@ -77,6 +86,11 @@ class AnswerViewController: UIViewController {
         } else {
             performSegue(withIdentifier: "backToQuestion", sender: self)
         }
+    }
+    
+    // broken atm, will change to a segue later
+    @objc func handleDismiss(_ sender: UIButton) {
+        self.dismiss(animated: true)
     }
     
 }
