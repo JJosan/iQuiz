@@ -72,13 +72,99 @@
                     </view>
                     <connections>
                         <outlet property="tableView_quiz" destination="hJC-6M-OE8" id="MkK-ZS-TbZ"/>
+                        <segue destination="fN2-N0-tEw" kind="presentation" identifier="toQuestion" modalPresentationStyle="fullScreen" id="RKT-gj-o8r"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="18.840579710144929" y="79.6875"/>
         </scene>
+        <!--Question View Controller-->
+        <scene sceneID="cpx-qQ-ptV">
+            <objects>
+                <viewController id="fN2-N0-tEw" customClass="QuestionViewController" customModule="iQuiz" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="hHG-z4-9IO">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="0Pz-Ud-stK">
+                                <rect key="frame" x="16" y="60" width="382" height="506"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="answers" textLabel="O23-fD-Bql" style="IBUITableViewCellStyleDefault" id="gYy-lh-eRd">
+                                        <rect key="frame" x="0.0" y="44.5" width="382" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="gYy-lh-eRd" id="zVI-eX-0Hg">
+                                            <rect key="frame" x="0.0" y="0.0" width="382" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="O23-fD-Bql">
+                                                    <rect key="frame" x="20" y="0.0" width="342" height="44"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="0.0"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="NOy-tP-1mq"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="NOy-tP-1mq" firstAttribute="trailing" secondItem="0Pz-Ud-stK" secondAttribute="trailing" constant="16" id="Zz0-30-aaO"/>
+                            <constraint firstItem="0Pz-Ud-stK" firstAttribute="leading" secondItem="NOy-tP-1mq" secondAttribute="leading" constant="16" id="qFn-aT-xo6"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="0Pz-Ud-stK" id="xFR-IF-fpg"/>
+                        <segue destination="wNc-9J-sD4" kind="presentation" identifier="toAnswer" modalPresentationStyle="fullScreen" id="kGp-Fr-bxH"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="r39-pN-zJO" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="791.304347826087" y="81.696428571428569"/>
+        </scene>
+        <!--Answer View Controller-->
+        <scene sceneID="5ie-Ps-dRT">
+            <objects>
+                <viewController id="wNc-9J-sD4" customClass="AnswerViewController" customModule="iQuiz" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="5Do-76-hn3">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="pyd-u7-X78"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <connections>
+                        <segue destination="fN2-N0-tEw" kind="presentation" identifier="backToQuestion" modalPresentationStyle="fullScreen" id="HWb-fL-WnL"/>
+                        <segue destination="7Q8-1v-xAQ" kind="presentation" identifier="toFinished" id="K99-Wc-10b"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="uk7-s3-VyA" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1651" y="88"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="mU4-cg-ZmQ">
+            <objects>
+                <viewController id="7Q8-1v-xAQ" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="anj-sN-HsD">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="E7m-Nl-rip"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xh5-Eb-oVg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2571" y="80"/>
+        </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="HWb-fL-WnL"/>
+    </inferredMetricsTieBreakers>
     <resources>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
