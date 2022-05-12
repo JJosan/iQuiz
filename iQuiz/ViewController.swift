@@ -77,7 +77,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         let curr = data[indexPath.row]
         
         // dunno where image is
-        //cell.imageView?.image = curr.0
+        cell.imageView?.image = UIImage(named: "nuggets")
         cell.textLabel?.text = curr.title
         cell.detailTextLabel?.text = curr.desc
         return cell
