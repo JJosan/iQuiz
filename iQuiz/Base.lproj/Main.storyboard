@@ -118,6 +118,7 @@
                             <constraint firstItem="0Pz-Ud-stK" firstAttribute="leading" secondItem="NOy-tP-1mq" secondAttribute="leading" constant="16" id="qFn-aT-xo6"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="RoL-S1-Oam"/>
                     <connections>
                         <outlet property="tableView" destination="0Pz-Ud-stK" id="xFR-IF-fpg"/>
                         <segue destination="wNc-9J-sD4" kind="presentation" identifier="toAnswer" modalPresentationStyle="fullScreen" id="kGp-Fr-bxH"/>
@@ -163,7 +164,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="kGp-Fr-bxH"/>
         <segue reference="HWb-fL-WnL"/>
     </inferredMetricsTieBreakers>
     <resources>

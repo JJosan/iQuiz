@@ -73,7 +73,27 @@ class AnswerViewController: UIViewController {
             other.questionNum = questionNum
             other.totalCorrect = totalCorrect
         case "toFinished":
-            print("done")
+            let other = segue.destination as! FinishedViewController
+            let test = sender as! AnswerViewController
+            let subject = test.subject! as Subject
+            other.label_subject.text = subject.title
+            
+            let totalQuestions = subject.questions.count
+
+            other.totalQuestions = totalQuestions
+            other.correctAnswers = totalCorrect!
+            
+            other.label_score.text = "\(String(describing: totalCorrect!)) / \(totalQuestions) correct"
+            
+            let half = totalQuestions / 2
+            
+            if totalCorrect! == totalQuestions {
+                other.label_words.text = "Perfect!"
+            } else if totalCorrect! > half {
+                other.label_words.text = "Almost!"
+            } else {
+                other.label_words.text = "Terrible!"
+            }
         default:
             print("something is wrong")
         }

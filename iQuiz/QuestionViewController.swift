@@ -70,10 +70,12 @@ class QuestionViewController: UIViewController, UITableViewDataSource, UITableVi
             other.questionNum = questionNum + 1
             other.label_correctAnswer.text = subject.questions[questionNum].answers[correct - 1]
             if correct == currentSelection {
-                other.totalCorrect = totalCorrect + 1
+                //other.totalCorrect = totalCorrect + 1
+                other.totalCorrect = totalCorrect! + 1
                 other.label_feedback.backgroundColor = UIColor.green
                 other.label_feedback.text = "Correct"
             } else {
+                other.totalCorrect = totalCorrect!
                 other.label_feedback.backgroundColor = UIColor.red
                 other.label_feedback.text = "Incorrect"
             }
