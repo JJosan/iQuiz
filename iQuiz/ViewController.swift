@@ -15,7 +15,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     @IBOutlet weak var tableView_quiz: UITableView!
 
     @IBAction func toolbarItem_settings(_ sender: Any) {
-        alert("Settings", "Settings go here")
+        performSegue(withIdentifier: "toSettings", sender: self)
     }
     
     override func viewDidLoad() {
@@ -23,35 +23,10 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         tableView_quiz.delegate = self
         tableView_quiz.dataSource = self
         tableView_quiz.rowHeight = 75.0
+        //getData("http://tednewardsandbox.site44.com/questions.json")
         createFakeData()
-        
-//        var test : [String] = ["hi"]
-//
-//        let url = URL(string: "http://tednewardsandbox.site44.com/questions.json")
-//        let session = URLSession.shared.dataTask(with: url!) {
-//            data, response, error in
-//            if response != nil {
-//                if (response! as! HTTPURLResponse).statusCode != 200 {
-//                    print("something went wrong. error: \(error!)")
-//                } else {
-//                    do {
-//                        let questions =  try JSONSerialization.jsonObject(with: data!) as! NSArray
-//                        for i in 0..<questions.count {
-//                            let temp = questions[i] as! NSDictionary
-//                            //self.test.append(Question(temp["title"] as! String, temp["desc"] as! String))
-//                            test.append(temp["title"] as! String)
-//                        }
-//                        print("sanity check")
-//                    } catch {
-//                        print("something went wrong")
-//                    }
-//                }
-//            }
-//        }
-//        session.resume()
-        
     }
-
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segue.identifier {
         case "toQuestion":
@@ -62,6 +37,9 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             other.label_question.text = subject.questions[0].text
             other.questionNum = 0
             other.totalCorrect = 0
+        case "toSettings":
+            let other = segue.destination as! SettingsViewController
+            other.rootVC = self
         default:
             print("something is wrong")
         }
@@ -76,7 +54,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         let curr = data[indexPath.row]
         
-        // dunno where image is
         cell.imageView?.image = UIImage(named: "nuggets")
         cell.textLabel?.text = curr.title
         cell.detailTextLabel?.text = curr.desc
@@ -89,11 +66,49 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         performSegue(withIdentifier: "toQuestion", sender: item)
     }
     
-    func alert(_ title : String, _ message : String) {
-        let dialogMessage = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let ok = UIAlertAction(title: "OK", style: .default, handler: nil)
-        dialogMessage.addAction(ok)
-        self.present(dialogMessage, animated: true, completion: nil)
+    func getData(_ yes : String) {
+        guard let url = URL(string: yes) else {
+            return
+        }
+        let session = URLSession.shared.dataTask(with: url) { data, response, error in
+            if response != nil {
+                if (response! as! HTTPURLResponse).statusCode != 200 {
+                    print("something went wrong. error: \(error!)")
+                } else {
+                    do {
+                        self.data = []
+                        let questions =  try JSONSerialization.jsonObject(with: data!) as! NSArray
+                        DispatchQueue.main.async {
+                            for i in 0..<questions.count {
+                                let object = questions[i] as! NSDictionary
+                                let objectQuestions = object["questions"]! as! NSArray
+                                var QuestionArray : [Question] = []
+                                for i in 0..<objectQuestions.count {
+                                    let oneQuestion = objectQuestions[i] as! NSDictionary
+                                    QuestionArray.append(
+                                        Question(
+                                            oneQuestion["text"] as! String,
+                                            oneQuestion["answer"] as! String,
+                                            oneQuestion["answers"] as! [String]
+                                        )
+                                    )
+                                }
+                                
+                                self.data.append(Subject(
+                                    object["title"]! as! String,
+                                    object["desc"]! as! String,
+                                    QuestionArray
+                                ))
+                            }
+                            self.tableView_quiz.reloadData()
+                        }
+                    } catch {
+                        print("something went wrong")
+                    }
+                }
+            }
+        }
+        session.resume()
     }
     
     func createFakeData() {
@@ -113,59 +128,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
                 )
             ]
         ))
-        
-        data.append(Subject(
-            "Marvel Super Heroes",
-            "Avengers, Assemble!",
-            [
-                Question(
-                    "Who is Iron Man?",
-                    "1",
-                    [
-                        "Tony Stark",
-                        "Obadiah Stane",
-                        "A rock hit by Megadeth",
-                        "Nobody knows"
-                    ]
-                ),
-                Question(
-                    "Who founded the X-Men?",
-                    "2",
-                    [
-                        "Tony Stark",
-                        "Professor X",
-                        "The X-Institute",
-                        "Erik Lensherr"
-                    ]
-                ),
-                Question(
-                    "How did Spider-Man get his powers?",
-                    "1",
-                    [
-                        "He was bitten by a radioactive spider",
-                        "He ate a radioactive spider",
-                        "He is a radioactive spider",
-                        "He looked at a radioactive spider"
-                    ]
-                )
-            ]
-        ))
-        
-        data.append(Subject(
-            "Mathematics",
-            "Did you pass the third grade?",
-            [
-                Question(
-                    "What is 2+2?",
-                    "1",
-                    [
-                        "4",
-                        "22",
-                        "An irrational number",
-                        "Nobody knows"
-                    ]
-                )
-            ]
-        ))
     }
+    
 }

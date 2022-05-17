@@ -8,6 +8,35 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--Settings View Controller-->
+        <scene sceneID="ExR-dz-xtc">
+            <objects>
+                <viewController id="1ih-oL-dMP" customClass="SettingsViewController" customModule="iQuiz" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="fJQ-vf-ZAE">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="7HU-eY-LgK">
+                                <rect key="frame" x="16" y="431" width="382" height="34"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="mKU-cf-JSv"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="mKU-cf-JSv" firstAttribute="trailing" secondItem="7HU-eY-LgK" secondAttribute="trailing" constant="16" id="TES-YS-1Sn"/>
+                            <constraint firstItem="7HU-eY-LgK" firstAttribute="leading" secondItem="mKU-cf-JSv" secondAttribute="leading" constant="16" id="TPO-yn-BoK"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="text_url" destination="7HU-eY-LgK" id="GXf-o5-oka"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Fsc-Mv-bdl" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="19" y="-589"/>
+        </scene>
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
@@ -73,6 +102,9 @@
                     <connections>
                         <outlet property="tableView_quiz" destination="hJC-6M-OE8" id="MkK-ZS-TbZ"/>
                         <segue destination="fN2-N0-tEw" kind="presentation" identifier="toQuestion" modalPresentationStyle="fullScreen" id="RKT-gj-o8r"/>
+                        <segue destination="1ih-oL-dMP" kind="popoverPresentation" identifier="toSettings" popoverAnchorBarButtonItem="rh1-GJ-hkt" id="cTL-nC-idN">
+                            <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                        </segue>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
