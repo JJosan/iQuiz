@@ -13,7 +13,7 @@
             <objects>
                 <viewController id="1ih-oL-dMP" customClass="SettingsViewController" customModule="iQuiz" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="fJQ-vf-ZAE">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textField opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="7HU-eY-LgK">
@@ -102,9 +102,6 @@
                     <connections>
                         <outlet property="tableView_quiz" destination="hJC-6M-OE8" id="MkK-ZS-TbZ"/>
                         <segue destination="fN2-N0-tEw" kind="presentation" identifier="toQuestion" modalPresentationStyle="fullScreen" id="RKT-gj-o8r"/>
-                        <segue destination="1ih-oL-dMP" kind="popoverPresentation" identifier="toSettings" popoverAnchorBarButtonItem="rh1-GJ-hkt" id="cTL-nC-idN">
-                            <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
-                        </segue>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

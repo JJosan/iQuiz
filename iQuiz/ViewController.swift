@@ -12,10 +12,27 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     var data : [Subject] = []
     
+    var urlString = ""
+    
     @IBOutlet weak var tableView_quiz: UITableView!
 
     @IBAction func toolbarItem_settings(_ sender: Any) {
-        performSegue(withIdentifier: "toSettings", sender: self)
+        let alert = UIAlertController(title: "Settings", message: "iQuiz Settings", preferredStyle: .alert)
+               let confirmQuestions = UIAlertAction(title: "Enter", style: .default) { _ in
+                   self.urlString = (alert.textFields?[0].text)!
+                   UserDefaults.standard.set(self.urlString, forKey: "url_preferences")
+                   self.getData(self.urlString)
+                   self.tableView_quiz.reloadData()
+               }
+               alert.addTextField { (textField) in
+                   textField.placeholder = "Enter new URL to get questions from"
+               }
+               let cancelQuestions = UIAlertAction(title: "Cancel", style: .default) { _ in
+               }
+               alert.addAction(confirmQuestions)
+               alert.addAction(cancelQuestions)
+               
+               self.present(alert, animated: true, completion: nil)
     }
     
     override func viewDidLoad() {
@@ -23,8 +40,11 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         tableView_quiz.delegate = self
         tableView_quiz.dataSource = self
         tableView_quiz.rowHeight = 75.0
-        //getData("http://tednewardsandbox.site44.com/questions.json")
-        createFakeData()
+        if UserDefaults.standard.string(forKey: "url_preference") != nil {
+            getData(UserDefaults.standard.string(forKey: "url_preference")!)
+        } else {
+            getData("http://tednewardsandbox.site44.com/questions.json")
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -37,9 +57,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             other.label_question.text = subject.questions[0].text
             other.questionNum = 0
             other.totalCorrect = 0
-        case "toSettings":
-            let other = segue.destination as! SettingsViewController
-            other.rootVC = self
         default:
             print("something is wrong")
         }
@@ -51,9 +68,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell : UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "quiz", for: indexPath)
-        
         let curr = data[indexPath.row]
-        
         cell.imageView?.image = UIImage(named: "nuggets")
         cell.textLabel?.text = curr.title
         cell.detailTextLabel?.text = curr.desc
@@ -73,37 +88,53 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         let session = URLSession.shared.dataTask(with: url) { data, response, error in
             if response != nil {
                 if (response! as! HTTPURLResponse).statusCode != 200 {
-                    print("something went wrong. error: \(error!)")
+                    // get from database
+                    let archivePath = NSHomeDirectory() + "/Documents/questions.archive"
+                    let archiveURL = URL(fileURLWithPath: archivePath)
+                    let readQuestions = NSArray(contentsOf: archiveURL)
+                    if readQuestions != nil {
+                        let questions = readQuestions!
+                        DispatchQueue.main.async {
+                            print("no internet")
+                            self.data = []
+                            self.loadItems(questions)
+                            self.tableView_quiz.reloadData()
+                        }
+                    } else {
+                        DispatchQueue.main.async {
+                            let noItems = UILabel()
+                            self.view.addSubview(noItems)
+                            noItems.translatesAutoresizingMaskIntoConstraints = false
+                            noItems.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+                            noItems.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
+                            noItems.text = "Nothing"
+                            
+                        }
+                    }
+                    
                 } else {
                     do {
                         self.data = []
                         let questions =  try JSONSerialization.jsonObject(with: data!) as! NSArray
                         DispatchQueue.main.async {
-                            for i in 0..<questions.count {
-                                let object = questions[i] as! NSDictionary
-                                let objectQuestions = object["questions"]! as! NSArray
-                                var QuestionArray : [Question] = []
-                                for i in 0..<objectQuestions.count {
-                                    let oneQuestion = objectQuestions[i] as! NSDictionary
-                                    QuestionArray.append(
-                                        Question(
-                                            oneQuestion["text"] as! String,
-                                            oneQuestion["answer"] as! String,
-                                            oneQuestion["answers"] as! [String]
-                                        )
-                                    )
-                                }
-                                
-                                self.data.append(Subject(
-                                    object["title"]! as! String,
-                                    object["desc"]! as! String,
-                                    QuestionArray
-                                ))
-                            }
+                            print("yes internet")
+                            self.loadItems(questions)
                             self.tableView_quiz.reloadData()
+                            // writing
+                            let archivePath = NSHomeDirectory() + "/Documents/questions.archive"
+                            let nsQuestions = questions
+                            nsQuestions.write(toFile: archivePath, atomically: true)
                         }
                     } catch {
-                        print("something went wrong")
+                        DispatchQueue.main.async {
+                            let alert = UIAlertController(title: "Error", message: "Can't Fetch", preferredStyle: .alert)
+                               let cancelQuestions = UIAlertAction(title: "OK", style: .default) { _ in
+                               }
+                               alert.addAction(cancelQuestions)
+                               
+                               self.present(alert, animated: true, completion: nil)
+                        }
+                        
                     }
                 }
             }
@@ -111,23 +142,28 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         session.resume()
     }
     
-    func createFakeData() {
-        data.append(Subject(
-            "Science!",
-            "Because SCIENCE!",
-            [
-                Question(
-                    "What is fire?",
-                    "1",
-                    [
-                        "One of the four classical elements",
-                        "A magical reaction given to us by God",
-                        "A band that hasn't yet been discovered",
-                        "Fire! Fire! Fire! heh-heh"
-                    ]
+    func loadItems(_ questions : NSArray){
+        for i in 0..<questions.count {
+            let object = questions[i] as! NSDictionary
+            let objectQuestions = object["questions"]! as! NSArray
+            var QuestionArray : [Question] = []
+            for i in 0..<objectQuestions.count {
+                let oneQuestion = objectQuestions[i] as! NSDictionary
+                QuestionArray.append(
+                    Question(
+                        oneQuestion["text"] as! String,
+                        oneQuestion["answer"] as! String,
+                        oneQuestion["answers"] as! [String]
+                    )
                 )
-            ]
-        ))
+            }
+            
+            self.data.append(Subject(
+                object["title"]! as! String,
+                object["desc"]! as! String,
+                QuestionArray
+            ))
+        }
     }
     
 }

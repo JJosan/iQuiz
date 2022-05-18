@@ -17,13 +17,21 @@ class SettingsViewController: UIViewController {
     let btn_check = UIButton()
     let label_connected = UILabel()
     
+    var myUrl : String = ""
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if UserDefaults.standard.string(forKey: "url_preference") != nil {
+            myUrl = UserDefaults.standard.string(forKey: "url_preference")!
+        } else {
+            myUrl = "http://tednewardsandbox.site44.com/questions.json"
+        }
         
         text_url.translatesAutoresizingMaskIntoConstraints = false
         text_url.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         text_url.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        text_url.text = "http://tednewardsandbox.site44.com/questions.json"
+        text_url.text = myUrl
         
         self.view.addSubview(btn_check)
         btn_check.translatesAutoresizingMaskIntoConstraints = false
@@ -62,6 +70,8 @@ class SettingsViewController: UIViewController {
                     self.label_connected.backgroundColor = UIColor.green
                     self.label_connected.text = "connected"
                     self.rootVC.getData(self.text_url.text!)
+                    self.myUrl = self.text_url.text!
+                    UserDefaults.standard.set(self.myUrl, forKey: "url_preference")
                 } else {
                     // do things here if not connected to internet
                     self.label_connected.backgroundColor = UIColor.red
